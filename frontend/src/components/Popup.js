@@ -8,30 +8,39 @@ import { Snackbar } from '@mui/material';
 const Popup = ({ message, setShowPopup, showPopup }) => {
     const dispatch = useDispatch();
 
-    const vertical = "top"
-    const horizontal = "right"
+    // Snackbar position
+    const vertical = "top";
+    const horizontal = "right";
 
+    // Handles closing the Snackbar
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
-            return;
+            return; // Ignore clickaway events
         }
-        setShowPopup(false);
-        dispatch(underControl())
-        dispatch(underStudentControl())
+        setShowPopup(false); // Close the popup
+        dispatch(underControl()); // Reset user-related state
+        dispatch(underStudentControl()); // Reset student-related state
     };
 
     return (
         <>
-            <Snackbar open={showPopup} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+            <Snackbar 
+                open={showPopup} 
+                autoHideDuration={2000} 
+                onClose={handleClose} 
+                anchorOrigin={{ vertical, horizontal }} 
+                key={vertical + horizontal}
+            >
                 {
-                    (message === "Done Successfully") ?
+                    (message === "Done Successfully") ? (
                         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                            {message}
+                            {message} {/* Success message */}
                         </Alert>
-                        :
+                    ) : (
                         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                            {message}
+                            {message} {/* Error message */}
                         </Alert>
+                    )
                 }
             </Snackbar>
         </>
@@ -40,6 +49,7 @@ const Popup = ({ message, setShowPopup, showPopup }) => {
 
 export default Popup;
 
+// Custom Alert component with MUI styling
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });

@@ -1,114 +1,8 @@
-// import React from "react";
-// import { BarChart, Bar, XAxis, YAxis, Tooltip } from "recharts";
-
-// const chartData = [
-//     {
-//         name: "Amphibians",
-//         value: 2488,
-//     },
-//     {
-//         name: "Birds",
-//         value: 1445,
-//     },
-//     {
-//         name: "Crustaceans",
-//         value: 743,
-//     },
-// ];
-
-// const dataFormatter = (value) => {
-//     return "$ " + Intl.NumberFormat("us").format(value).toString();
-// };
-// const CustomBarChart = () => {
-//     return (
-//         <BarChart width={500} height={300} data={chartData}>
-//             <XAxis dataKey="name" />
-//             <YAxis />
-//             <Tooltip formatter={dataFormatter} />
-//             <Bar dataKey="value" fill="blue" />
-//         </BarChart>
-//     );
-// };
-
-// export default CustomBarChart
-
-// import React from "react";
-// import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from "recharts";
-// import styled from "styled-components";
-
-// const chartData = [
-//     {
-//         subject: "Math",
-//         attendancePercentage: 80,
-//         totalClasses: 50,
-//         attendedClasses: Math.round((80 / 100) * 50),
-//     },
-//     {
-//         subject: "Science",
-//         attendancePercentage: 90,
-//         totalClasses: 60,
-//         attendedClasses: Math.round((90 / 100) * 60),
-//     },
-//     {
-//         subject: "History",
-//         attendancePercentage: 70,
-//         totalClasses: 45,
-//         attendedClasses: Math.round((70 / 100) * 45),
-//     },
-// ];
-
-// const CustomTooltip = styled.div`
-//   background-color: #fff;
-//   border-radius: 4px;
-//   padding: 10px;
-//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-// `;
-
-// const TooltipText = styled.p`
-//   margin: 0;
-//   font-weight: bold;
-// `;
-
-// const CustomTooltipContent = ({ active, payload }) => {
-//     if (active && payload && payload.length) {
-//         const { subject, attendancePercentage, totalClasses, attendedClasses } = payload[0].payload;
-
-//         return (
-//             <CustomTooltip>
-//                 <TooltipText>{subject}</TooltipText>
-//                 <TooltipText>Attendance: {attendancePercentage}%</TooltipText>
-//                 <TooltipText>Attended Classes: {attendedClasses}</TooltipText>
-//                 <TooltipText>Total Classes: {totalClasses}</TooltipText>
-//             </CustomTooltip>
-//         );
-//     }
-
-//     return null;
-// };
-
-// const colors = ["#0088FE", "#00C49F", "#FFBB28"];
-
-// const CustomBarChart = () => {
-//     return (
-//         <BarChart width={500} height={300} data={chartData}>
-//             <XAxis dataKey="subject" />
-//             <YAxis />
-//             <Tooltip content={<CustomTooltipContent />} />
-//             <Bar dataKey="attendancePercentage">
-//                 {chartData.map((entry, index) => (
-//                     <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-//                 ))}
-//             </Bar>
-//         </BarChart>
-//     );
-// };
-
-// export default CustomBarChart;
-
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from "recharts";
 import styled from "styled-components";
 
+// Styled component for the tooltip container
 const CustomTooltip = styled.div`
   background-color: #fff;
   border-radius: 4px;
@@ -116,25 +10,29 @@ const CustomTooltip = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
+// Styled component for the tooltip text
 const TooltipText = styled.p`
   margin: 0;
   font-weight: bold;
   color:#1e1e1e;
 `;
 
+// Styled component for the main heading in the tooltip
 const TooltipMain = styled.h2`
   margin: 0;
   font-weight: bold;
   color:#000000;
 `;
 
+// Custom tooltip content component for rendering dynamic tooltip data
 const CustomTooltipContent = ({ active, payload, dataKey }) => {
     if (active && payload && payload.length) {
+        // Destructuring the data from the payload
         const { subject, attendancePercentage, totalClasses, attendedClasses, marksObtained, subName } = payload[0].payload;
 
         return (
             <CustomTooltip>
-                {dataKey === "attendancePercentage" ? (
+                {dataKey === "attendancePercentage" ? ( // Conditional rendering based on the dataKey
                     <>
                         <TooltipMain>{subject}</TooltipMain>
                         <TooltipText>Attended: ({attendedClasses}/{totalClasses})</TooltipText>
@@ -150,19 +48,24 @@ const CustomTooltipContent = ({ active, payload, dataKey }) => {
         );
     }
 
-    return null;
+    return null; // Return null if the tooltip is not active
 };
 
+// Main component for rendering the custom bar chart
 const CustomBarChart = ({ chartData, dataKey }) => {
+    // Extracting subjects from the chart data
     const subjects = chartData.map((data) => data.subject);
+    // Generating distinct colors for each bar
     const distinctColors = generateDistinctColors(subjects.length);
 
     return (
         <BarChart width={500} height={500} data={chartData}>
+            {/* XAxis dynamically adjusts based on the dataKey */}
             <XAxis dataKey={dataKey === "marksObtained" ? "subName.subName" : "subject"} />
-            <YAxis domain={[0, 100]} />
-            <Tooltip content={<CustomTooltipContent dataKey={dataKey} />} />
+            <YAxis domain={[0, 100]} /> {/* YAxis is fixed to a range of 0 to 100 */}
+            <Tooltip content={<CustomTooltipContent dataKey={dataKey} />} /> {/* Custom tooltip */}
             <Bar dataKey={dataKey}>
+                {/* Rendering bars with distinct colors */}
                 {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={distinctColors[index]} />
                 ))}
@@ -171,26 +74,26 @@ const CustomBarChart = ({ chartData, dataKey }) => {
     );
 };
 
-// Helper function to generate distinct colors
+// Helper function to generate distinct colors for the bars
 const generateDistinctColors = (count) => {
     const colors = [];
-    const goldenRatioConjugate = 0.618033988749895;
+    const goldenRatioConjugate = 0.618033988749895; // Constant for generating distinct hues
 
     for (let i = 0; i < count; i++) {
-        const hue = (i * goldenRatioConjugate) % 1;
-        const color = hslToRgb(hue, 0.6, 0.6);
-        colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+        const hue = (i * goldenRatioConjugate) % 1; // Calculate hue using golden ratio
+        const color = hslToRgb(hue, 0.6, 0.6); // Convert HSL to RGB
+        colors.push(`rgb(${color[0]}, ${color[1]}, ${color[2]})`); // Push RGB color to the array
     }
 
-    return colors;
+    return colors; // Return the array of colors
 };
 
-// Helper function to convert HSL to RGB
+// Helper function to convert HSL values to RGB
 const hslToRgb = (h, s, l) => {
     let r, g, b;
 
     if (s === 0) {
-        r = g = b = l; // Achromatic
+        r = g = b = l; // Achromatic case
     } else {
         const hue2rgb = (p, q, t) => {
             if (t < 0) t += 1;
@@ -201,14 +104,15 @@ const hslToRgb = (h, s, l) => {
             return p;
         };
 
-        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        const p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1 / 3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1 / 3);
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s; // Calculate q
+        const p = 2 * l - q; // Calculate p
+        r = hue2rgb(p, q, h + 1 / 3); // Red channel
+        g = hue2rgb(p, q, h); // Green channel
+        b = hue2rgb(p, q, h - 1 / 3); // Blue channel
     }
 
+    // Convert normalized RGB values to 0-255 range
     return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 };
 
-export default CustomBarChart;
+export default CustomBarChart; // Export the component as default

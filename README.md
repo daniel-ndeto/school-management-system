@@ -1,192 +1,165 @@
-<h1 align="center">
-    SCHOOL MANAGEMENT SYSTEM
-</h1>
+# SCHOOL MANAGEMENT SYSTEM
 
 <h3 align="center">
-Streamline school management, class organization, and add students and faculty.<br>
-Seamlessly track attendance, assess performance, and provide feedback. <br>
-Access records, view marks, and communicate effortlessly.
+Transform your school’s daily operations into a dynamic, growth‐focused environment.<br>
+Easily organize classes, enroll students and faculty, and monitor progress in real time.<br>
+Utilize continuous attendance tracking, performance assessments, and timely feedback to drive improvement.<br>
+Access detailed records, review marks, and foster open communication to empower every learner.
 </h3>
 
-<br>
-[Youtube Video](https://youtu.be/ol650KwQkgY?si=rKcboqSv3n-e4UbC)
-<br><br>
-[LinkedIn](https://www.linkedin.com/in/yogndr/)
+## About
 
-# About
+The School Management System is a cutting-edge, web-based application built on the powerful MERN (MongoDB, Express.js, React.js, Node.js) stack. Engineered for maximum efficiency, it revolutionizes school administration by:
 
-The School Management System is a web-based application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. It aims to streamline school management, class organization, and facilitate communication between students, teachers, and administrators.
+- **Centralizing and Automating Administrative Tasks:**  
+  Manage student and teacher enrollment, class creation, and scheduling from one unified dashboard.
+
+- **Streamlining Class Organization:**  
+  Easily create and manage classes and subjects, ensuring smooth day-to-day operations.
+
+- **Facilitating Real-Time Communication:**  
+  Enable seamless, role-based communication among administrators, teachers, and students.
+
+**Leveraging the MERN architecture, our system delivers:**
+
+1. **Unparalleled Scalability & Performance:**  
+   - Lightning-fast data retrieval using a database-driven approach  
+   - Seamless scalability to accommodate growing institutional needs  
+   - Optimized for handling large volumes of concurrent users and data
+
+2. **Intuitive User Experience:**  
+   - Responsive React.js frontend with sleek, user-friendly dashboards tailored for Admin, Teacher, and Student roles  
+   - Intuitive navigation and minimal learning curve for all users
+
+3. **Robust Back-End Integration:**  
+   - Node.js and Express.js powering efficient server-side operations  
+   - MongoDB’s flexible, document-based storage adapts to diverse data structures  
+   - Real-time data synchronization for up-to-the-minute information
+
+4. **Enhanced Security:**  
+   - Role-based access control to protect sensitive information  
+   - Encrypted data transmission and storage  
+   - Regular security updates to safeguard against potential vulnerabilities
+
+5. **Comprehensive Analytics:**  
+   - Built-in reporting tools for administrators and teachers  
+   - Interactive data visualization features (charts, tables) to track student performance trends  
+   - Actionable insights to drive continuous improvement in educational outcomes
+
+## What My Project Can Do
+
+- **Centralized Administration:**  
+  Automate and manage critical tasks like student and teacher enrollment, class creation, and scheduling—all from a single dashboard.
+
+- **Role-Based Dashboards:**  
+  Provide tailored, intuitive interfaces for administrators, teachers, and students, ensuring each group accesses the features they need.
+
+- **Real-Time Attendance Tracking:**  
+  Enable teachers to quickly mark attendance, generate reports, and monitor trends to help identify and address absenteeism.
+
+- **Performance Assessments:**  
+  Allow teachers to record marks, provide detailed feedback, and track students’ academic progress over time using interactive charts and reports.
+
+- **Effective Communication:**  
+  Facilitate real-time messaging and notifications between students, teachers, and administrators to foster collaboration and engagement.
+
+- **Data Visualization & Analytics:**  
+  Offer built-in reporting tools and data visualization features that help monitor academic performance and attendance, enabling data-driven decision-making.
+
+- **Robust Security Measures:**  
+  Protect sensitive information with role-based access control and encrypted data transmission and storage.
+
+- **Scalability & Performance:**  
+  Leverage the MERN stack to support rapid data retrieval and scalability, ensuring the system grows with your institution while maintaining high performance.
+
+- **Seamless Deployment & Maintenance:**  
+  Clear installation and error-resolution guidelines simplify setup locally and deployment to production environments using services like Render and Netlify.
+
+In essence, our School Management System empowers schools to streamline administrative processes, enhance educational outcomes, and create a connected, growth-focused environment where every stakeholder has the tools they need for success.
 
 ## Features
 
-- **User Roles:** The system supports three user roles: Admin, Teacher, and Student. Each role has specific functionalities and access levels.
+- **User Roles:**  
+  The system supports three user roles: Admin, Teacher, and Student. Each role has specific functionalities and access levels.
 
-- **Admin Dashboard:** Administrators can add new students and teachers, create classes and subjects, manage user accounts, and oversee system settings.
+- **Admin Dashboard:**  
+  Administrators can add new students and teachers, create classes and subjects, manage user accounts, and oversee system settings.
 
-- **Attendance Tracking:** Teachers can easily take attendance for their classes, mark students as present or absent, and generate attendance reports.
+- **Attendance Tracking:**  
+  Teachers can easily take attendance for their classes, mark students as present or absent, and generate attendance reports.
 
-- **Performance Assessment:** Teachers can assess students' performance by providing marks and feedback. Students can view their marks and track their progress over time.
+- **Performance Assessment:**  
+  Teachers can assess students' performance by providing marks and feedback. Students can view their marks and track their progress over time.
 
-- **Data Visualization:** Students can visualize their performance data through interactive charts and tables, helping them understand their academic performance at a glance.
+- **Data Visualization:**  
+  Students and teachers can visualize performance data through interactive charts and tables for an at-a-glance understanding.
 
-- **Communication:** Users can communicate effortlessly through the system. Teachers can send messages to students and vice versa, promoting effective communication and collaboration.
+- **Communication:**  
+  Facilitate effective communication via in-system messaging and notifications among students, teachers, and administrators.
 
 ## Technologies Used
 
-- Frontend: React.js, Material UI, Redux
-- Backend: Node.js, Express.js
-- Database: MongoDB
+- **Frontend:** React.js, Material UI, Redux  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB
 
-<br>
+## Installation
 
-# Installation
-
+Clone the repository:
 ```sh
-git clone https://github.com/Yogndrr/MERN-School-Management-System.git
-```
-Open 2 terminals in separate windows/tabs.
+git clone https://github.com/daniel-ndeto/school-management-system.git
 
-Terminal 1: Setting Up Backend 
-```sh
-cd backend
-npm install
-npm start
-```
 
-Create a file called .env in the backend folder.
-Inside it write this :
-
-```sh
-MONGO_URL = mongodb://127.0.0.1/school
-```
-If you are using MongoDB Compass you can use this database link but if you are using MongoDB Atlas then instead of this link write your own database link.
-
-Terminal 2: Setting Up Frontend
-```sh
-cd frontend
-npm install
-npm start
-```
-Now, navigate to `localhost:3000` in your browser. 
-The Backend API will be running at `localhost:5000`.
-<br>
-# Error Solution
-
-You might encounter an error while signing up, either a network error or a loading error that goes on indefinitely.
-
-To resolve it:
-
-1. Navigate to the `frontend > .env` file.
-
-2. Uncomment the first line. After that, terminate the frontend terminal. Open a new terminal and execute the following commands:
-```sh
-cd frontend
-npm start
-```
-
-After completing these steps, try signing up again. If the issue persists, follow these additional steps to resolve it:
-
-1. Navigate to the `frontend > src > redux > userRelated > userHandle.js` file.
-
-2. Add the following line after the import statements:
-
-```javascript
-const REACT_APP_BASE_URL = "http://localhost:5000";
-```
-
-3. Replace all instances of `process.env.REACT_APP_BASE_URL` with `REACT_APP_BASE_URL`.
-
-**IMPORTANT:** Repeat the same process for all other files with "Handle" in their names.
-
-For example, in the `redux` folder, there are other folders like `userRelated`. In the `teacherRelated` folder, you'll find a file named `teacherHandle`. Similarly, other folders contain files with "Handle" in their names. Make sure to update these files as well.
-
-The issue arises because the `.env` file in the frontend may not work for all users, while it works for me.
-
-Additionally:
-
-- When testing the project, start by signing up rather than logging in as a guest or using regular login if you haven't created an account yet.
-  
-  To use guest mode, navigate to `LoginPage.js` and provide an email and password from a project already created in the system. This simplifies the login process, and after creating your account, you can use your credentials.
-
-These steps should resolve the network error in the frontend. If the issue persists, feel free to contact me for further assistance.
-
-# Delete Feature Not Working Solution
-
-When attempting to delete items, you may encounter a popup message stating, "Sorry, the delete function has been disabled for now." This message appears because I have disabled the delete function on my live site to prevent guests from deleting items. If you wish to enable the delete feature, please follow these steps:
-
-1. Navigate to the `frontend > src > redux > userRelated > userHandle.js` file.
-
-2. If you haven't made any changes, you should find the `deleteUser` function at line 71. It may be commented out. It might look like this:
-
-```javascript
-// export const deleteUser = (id, address) => async (dispatch) => {
-//     dispatch(getRequest());
-
-//     try {
-//         const result = await axios.delete(`${process.env.REACT_APP_BASE_URL}/${address}/${id}`);
-//         if (result.data.message) {
-//             dispatch(getFailed(result.data.message));
-//         } else {
-//             dispatch(getDeleteSuccess());
-//         }
-//     } catch (error) {
-//         dispatch(getError(error));
-//     }
-// }
-```
-
-3. Uncomment above `deleteUser` function and comment out this `deleteUser` function that is currently running from line 87 to line 90 :
-
-```javascript
-export const deleteUser = (id, address) => async (dispatch) => {
-    dispatch(getRequest());
-    dispatch(getFailed("Sorry the delete function has been disabled for now."));
-}
-```
-
-4. If you have previously modified the code, you may find the `deleteUser` functions at different lines. In this case, uncomment the original code and comment out the current one.
-
-5. Next, navigate to the `frontend > src > pages > admin` folder. Here, you will find different folders suffixed with "Related". Open each folder and locate files prefixed with "Show".
-
-6. Open each file with "Show" as a prefix and search for a function named `deleteHandler`. For example:
+### Setup Backend
+1. Open a terminal and navigate to the `backend` folder:
    
-```javascript
-const deleteHandler = (deleteID, address) => {
-  console.log(deleteID);
-  console.log(address);
-  setMessage("Sorry, the delete function has been disabled for now.");
-  setShowPopup(true);
-  // dispatch(deleteUser(deleteID, address))
-  //   .then(() => {
-  //     dispatch(getAllSclasses(adminID, "Sclass"));
-  //   })
-}
-```
+   cd backend
+   npm install
+   npm start
+   ```
+2. Create a `.env` file in the `backend` folder and add:
+   ```sh
+   MONGO_URL = mongodb://127.0.0.1/school
+   ```
+   *(Replace with your MongoDB Atlas link if necessary.)*
 
-7. This is an example snippet from `ShowClasses`. In other files with "Show" as a prefix, it may differ.
+### Setup Frontend
+1. Open another terminal and navigate to the `frontend` folder:
+   ```sh
+   cd frontend
+   npm install
+   npm start
+   ```
+2. Open your browser and navigate to `localhost:3000` for the frontend.  
+   The backend API will run at `localhost:5000`.
 
-8. Uncomment the commented-out code inside the `deleteHandler` function and comment out the existing code. It should resemble this:
+## Error Solution
 
-```javascript
-const deleteHandler = (deleteID, address) => {
-  // console.log(deleteID);
-  // console.log(address);
-  // setMessage("Sorry, the delete function has been disabled for now.");
-  // setShowPopup(true);
-  dispatch(deleteUser(deleteID, address))
-    .then(() => {
-      dispatch(getAllSclasses(adminID, "Sclass"));
-    })
-}
-```
+If you encounter a sign-up error (e.g., a network error or endless loading):
 
-9. Repeat these steps for every other file. In some cases, the `deleteHandler` function may also be found in files prefixed with "View". Check those files and repeat the same process.
+1. **Frontend Environment Variables:**
+   - Navigate to `frontend/.env` and uncomment the first line.
+   - Restart the frontend server:
+     ```sh
+     cd frontend
+     npm start
+     ```
 
-If the issue persists, feel free to contact me for further assistance.
+2. **Update Base URL in Code:**
+   - In `frontend/src/redux/userRelated/userHandle.js`, add after the import statements:
+     ```javascript
+     const REACT_APP_BASE_URL = "http://localhost:5000";
+     ```
+   - Replace all instances of `process.env.REACT_APP_BASE_URL` with `REACT_APP_BASE_URL` in files containing "Handle" in their names (e.g., in `teacherRelated` and other related folders).
 
-Don't forget to leave a star for this project if you found the solution helpful. Thank you!
+3. **Account Setup:**
+   - Sign up first rather than logging in as a guest.  
+   - For guest mode, use credentials from an existing account in the system as specified in `LoginPage.js`.
 
-# Deployment
-* Render - server side
-* Netlify - client side
+
+## Deployment
+
+- **Backend:** Deployed using **Render** for server-side operations.
+- **Frontend:** Deployed using **Netlify** for client-side hosting.
+
 
