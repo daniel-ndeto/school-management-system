@@ -14,14 +14,14 @@ import { getAllTeachers } from '../../redux/teacherRelated/teacherHandle';
 
 const AdminHomePage = () => {
     const dispatch = useDispatch();
+    // Get data from Redux store
     const { studentsList } = useSelector((state) => state.student);
     const { sclassesList } = useSelector((state) => state.sclass);
     const { teachersList } = useSelector((state) => state.teacher);
+    const { currentUser } = useSelector(state => state.user);
+    const adminID = currentUser._id;
 
-    const { currentUser } = useSelector(state => state.user)
-
-    const adminID = currentUser._id
-
+    // Fetch students, classes, and teachers when adminID changes
     useEffect(() => {
         dispatch(getAllStudents(adminID));
         dispatch(getAllSclasses(adminID, "Sclass"));
@@ -33,56 +33,47 @@ const AdminHomePage = () => {
     const numberOfTeachers = teachersList && teachersList.length;
 
     return (
-        <>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Students} alt="Students" />
-                            <Title>
-                                Total Students
-                            </Title>
-                            <Data start={0} end={numberOfStudents} duration={2.5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Classes} alt="Classes" />
-                            <Title>
-                                Total Classes
-                            </Title>
-                            <Data start={0} end={numberOfClasses} duration={5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Teachers} alt="Teachers" />
-                            <Title>
-                                Total Teachers
-                            </Title>
-                            <Data start={0} end={numberOfTeachers} duration={2.5} />
-                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={3}>
-                        <StyledPaper>
-                            <img src={Fees} alt="Fees" />
-                            <Title>
-                                Fees Collection
-                            </Title>
-                            <Data start={0} end={23000} duration={2.5} prefix="$" />                        </StyledPaper>
-                    </Grid>
-                    <Grid item xs={12} md={12} lg={12}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <SeeNotice />
-                        </Paper>
-                    </Grid>
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <img src={Students} alt="Students" />
+                        <Title>Total Students</Title>
+                        <Data start={0} end={numberOfStudents} duration={2.5} />
+                    </StyledPaper>
                 </Grid>
-            </Container>
-        </>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <img src={Classes} alt="Classes" />
+                        <Title>Total Classes</Title>
+                        <Data start={0} end={numberOfClasses} duration={5} />
+                    </StyledPaper>
+                </Grid>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <img src={Teachers} alt="Teachers" />
+                        <Title>Total Teachers</Title>
+                        <Data start={0} end={numberOfTeachers} duration={2.5} />
+                    </StyledPaper>
+                </Grid>
+                <Grid item xs={12} md={3} lg={3}>
+                    <StyledPaper>
+                        <img src={Fees} alt="Fees" />
+                        <Title>Fees Collection</Title>
+                        <Data start={0} end={23000} duration={2.5} prefix="$" />
+                    </StyledPaper>
+                </Grid>
+                <Grid item xs={12} md={12} lg={12}>
+                    <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                        <SeeNotice />
+                    </Paper>
+                </Grid>
+            </Grid>
+        </Container>
     );
 };
 
-
+// Styled components for consistent card and typography styling
 const StyledPaper = styled(Paper)`
   padding: 16px;
   display: flex;
@@ -102,4 +93,4 @@ const Data = styled(CountUp)`
   color: green;
 `;
 
-export default AdminHomePage
+export default AdminHomePage;

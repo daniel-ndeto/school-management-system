@@ -1,8 +1,9 @@
+// Importing necessary modules and components from React, React Router, Redux, MUI, and other libraries
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Grid, Box, Typography, Paper, Checkbox, FormControlLabel, TextField, CssBaseline, IconButton, InputAdornment, CircularProgress} from '@mui/material';
+import { Grid, Box, Typography, Paper, Checkbox, FormControlLabel, TextField, CssBaseline, IconButton, InputAdornment, CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import bgpic from "../../assets/designlogin.jpg"
@@ -13,15 +14,18 @@ import Popup from '../../components/Popup';
 
 const defaultTheme = createTheme();
 
+// Admin registration page component
 const AdminRegisterPage = () => {
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const dispatch = useDispatch(); // For dispatching Redux actions
+    const navigate = useNavigate(); // For navigation
 
-    const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);;
+    // Extracting necessary state from Redux store
+    const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);
 
-    const [toggle, setToggle] = useState(false)
-    const [loader, setLoader] = useState(false)
+    // Local state declarations for form handling and UI feedback
+    const [toggle, setToggle] = useState(false);
+    const [loader, setLoader] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -29,8 +33,9 @@ const AdminRegisterPage = () => {
     const [passwordError, setPasswordError] = useState(false);
     const [adminNameError, setAdminNameError] = useState(false);
     const [schoolNameError, setSchoolNameError] = useState(false);
-    const role = "Admin"
+    const role = "Admin";
 
+    // Handle form submission for registration
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -39,6 +44,7 @@ const AdminRegisterPage = () => {
         const email = event.target.email.value;
         const password = event.target.password.value;
 
+        // Check if any required field is missing and set error states accordingly
         if (!name || !schoolName || !email || !password) {
             if (!name) setAdminNameError(true);
             if (!schoolName) setSchoolNameError(true);
@@ -47,11 +53,12 @@ const AdminRegisterPage = () => {
             return;
         }
 
-        const fields = { name, email, password, role, schoolName }
-        setLoader(true)
-        dispatch(registerUser(fields, role))
+        const fields = { name, email, password, role, schoolName };
+        setLoader(true);
+        dispatch(registerUser(fields, role));
     };
 
+    // Clear error messages when user starts typing
     const handleInputChange = (event) => {
         const { name } = event.target;
         if (name === 'email') setEmailError(false);
@@ -60,20 +67,22 @@ const AdminRegisterPage = () => {
         if (name === 'schoolName') setSchoolNameError(false);
     };
 
+    // Monitor registration status to navigate or show error messages
     useEffect(() => {
         if (status === 'success' || (currentUser !== null && currentRole === 'Admin')) {
             navigate('/Admin/dashboard');
         }
         else if (status === 'failed') {
-            setMessage(response)
-            setShowPopup(true)
-            setLoader(false)
+            setMessage(response);
+            setShowPopup(true);
+            setLoader(false);
         }
         else if (status === 'error') {
-            console.log(error)
+            console.log(error);
         }
     }, [status, currentUser, currentRole, navigate, error, response]);
 
+    // Render the registration form along with background image and popup for errors
     return (
         <ThemeProvider theme={defaultTheme}>
             <Grid container component="main" sx={{ height: '100vh' }}>
@@ -173,7 +182,7 @@ const AdminRegisterPage = () => {
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
                             >
-                                {loader ? <CircularProgress size={24} color="inherit"/> : "Register"}
+                                {loader ? <CircularProgress size={24} color="inherit" /> : "Register"}
                             </LightPurpleButton>
                             <Grid container>
                                 <Grid>
@@ -208,8 +217,9 @@ const AdminRegisterPage = () => {
     );
 }
 
-export default AdminRegisterPage
+export default AdminRegisterPage;
 
+// Styled link component for navigation with custom styles
 const StyledLink = styled(Link)`
   margin-top: 9px;
   text-decoration: none;
