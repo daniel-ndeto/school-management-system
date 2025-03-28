@@ -11,73 +11,64 @@ import styled from "styled-components";
 
 const AddClass = () => {
     const [sclassName, setSclassName] = useState("");
-
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-
-    const userState = useSelector(state => state.user);
-    const { status, currentUser, response, error, tempDetails } = userState;
-
-    const adminID = currentUser._id
-    const address = "Sclass"
-
-    const [loader, setLoader] = useState(false)
+    const [loader, setLoader] = useState(false);
     const [message, setMessage] = useState("");
     const [showPopup, setShowPopup] = useState(false);
 
-    const fields = {
-        sclassName,
-        adminID,
-    };
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
+    const { status, currentUser, response, error, tempDetails } = useSelector(state => state.user);
+    const adminID = currentUser._id;
+    const address = "Sclass";
+
+    // Submit handler for creating a class
     const submitHandler = (event) => {
-        event.preventDefault()
-        setLoader(true)
-        dispatch(addStuff(fields, address))
+        event.preventDefault();
+        setLoader(true);
+        dispatch(addStuff({ sclassName, adminID }, address));
     };
 
+    // Monitor response status and navigate or display errors
     useEffect(() => {
         if (status === 'added' && tempDetails) {
-            navigate("/Admin/classes/class/" + tempDetails._id)
-            dispatch(underControl())
-            setLoader(false)
+            navigate("/Admin/classes/class/" + tempDetails._id);
+            dispatch(underControl());
+            setLoader(false);
         }
+        
         else if (status === 'failed') {
-            setMessage(response)
-            setShowPopup(true)
-            setLoader(false)
-        }
+            setMessage(response);
+            setShowPopup(true);
+            setLoader(false);
+        } 
+        
         else if (status === 'error') {
-            setMessage("Network Error")
-            setShowPopup(true)
-            setLoader(false)
+            setMessage("Network Error");
+            setShowPopup(true);
+            setLoader(false);
         }
+
     }, [status, navigate, error, response, dispatch, tempDetails]);
+
     return (
         <>
             <StyledContainer>
                 <StyledBox>
-                    <Stack sx={{
-                        alignItems: 'center',
-                        mb: 3
-                    }}>
-                        <img
-                            src={Classroom}
-                            alt="classroom"
-                            style={{ width: '80%' }}
-                        />
+                    <Stack sx={{ alignItems: 'center', mb: 3 }}>
+                        <img src={Classroom} alt="classroom" style={{ width: '80%' }} />
                     </Stack>
+
                     <form onSubmit={submitHandler}>
                         <Stack spacing={3}>
                             <TextField
                                 label="Create a class"
                                 variant="outlined"
                                 value={sclassName}
-                                onChange={(event) => {
-                                    setSclassName(event.target.value);
-                                }}
+                                onChange={(event) => setSclassName(event.target.value)}
                                 required
                             />
+
                             <BlueButton
                                 fullWidth
                                 size="large"
@@ -88,6 +79,7 @@ const AddClass = () => {
                             >
                                 {loader ? <CircularProgress size={24} color="inherit" /> : "Create"}
                             </BlueButton>
+                            
                             <Button variant="outlined" onClick={() => navigate(-1)}>
                                 Go Back
                             </Button>
@@ -97,10 +89,10 @@ const AddClass = () => {
             </StyledContainer>
             <Popup message={message} setShowPopup={setShowPopup} showPopup={showPopup} />
         </>
-    )
-}
+    );
+};
 
-export default AddClass
+export default AddClass;
 
 const StyledContainer = styled(Box)`
   flex: 1 1 auto;

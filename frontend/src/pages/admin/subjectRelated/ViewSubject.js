@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { getClassStudents, getSubjectDetails } from '../../../redux/sclassRelated/sclassHandle';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,46 +15,53 @@ import TableChartIcon from '@mui/icons-material/TableChart';
 import TableChartOutlinedIcon from '@mui/icons-material/TableChartOutlined';
 
 const ViewSubject = () => {
-  const navigate = useNavigate()
-  const params = useParams()
-  const dispatch = useDispatch();
+  const navigate = useNavigate(); // For navigation between routes
+  const params = useParams(); // Retrieve URL parameters
+  const dispatch = useDispatch(); // Dispatch Redux actions
+  // Retrieve necessary data from Redux store
   const { subloading, subjectDetails, sclassStudents, getresponse, error } = useSelector((state) => state.sclass);
 
-  const { classID, subjectID } = params
+  const { classID, subjectID } = params; // Destructure class and subject IDs from params
 
+  // Fetch subject details and class students when component mounts or params change
   useEffect(() => {
     dispatch(getSubjectDetails(subjectID, "Subject"));
     dispatch(getClassStudents(classID));
   }, [dispatch, subjectID, classID]);
 
+  // Log any error from the API
   if (error) {
-    console.log(error)
+    console.log(error);
   }
 
-  const [value, setValue] = useState('1');
+  const [value, setValue] = useState('1'); // For controlling the Tab component
 
+  // Handle tab change
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const [selectedSection, setSelectedSection] = useState('attendance');
+  const [selectedSection, setSelectedSection] = useState('attendance'); // For toggling between attendance and marks views
   const handleSectionChange = (event, newSection) => {
     setSelectedSection(newSection);
   };
 
+  // Define columns for the students table
   const studentColumns = [
     { id: 'rollNum', label: 'Roll No.', minWidth: 100 },
     { id: 'name', label: 'Name', minWidth: 170 },
-  ]
+  ];
 
+  // Map class students into table row format
   const studentRows = sclassStudents.map((student) => {
     return {
       rollNum: student.rollNum,
       name: student.name,
       id: student._id,
     };
-  })
+  });
 
+  // Button actions for attendance view in the table
   const StudentsAttendanceButtonHaver = ({ row }) => {
     return (
       <>
@@ -76,6 +83,7 @@ const ViewSubject = () => {
     );
   };
 
+  // Button actions for marks view in the table
   const StudentsMarksButtonHaver = ({ row }) => {
     return (
       <>
@@ -85,19 +93,23 @@ const ViewSubject = () => {
         >
           View
         </BlueButton>
-        <PurpleButton variant="contained"
-          onClick={() => navigate(`/Admin/subject/student/marks/${row.id}/${subjectID}`)}>
+        <PurpleButton
+          variant="contained"
+          onClick={() => navigate(`/Admin/subject/student/marks/${row.id}/${subjectID}`)}
+        >
           Provide Marks
         </PurpleButton>
       </>
     );
   };
 
+  // Section for displaying students with attendance or marks actions
   const SubjectStudentsSection = () => {
     return (
       <>
         {getresponse ? (
           <>
+            {/* Button to add students if response is received */}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
               <GreenButton
                 variant="contained"
@@ -113,6 +125,7 @@ const ViewSubject = () => {
               Students List:
             </Typography>
 
+            {/* Render table based on selected section */}
             {selectedSection === 'attendance' &&
               <TableTemplate buttonHaver={StudentsAttendanceButtonHaver} columns={studentColumns} rows={studentRows} />
             }
@@ -120,6 +133,7 @@ const ViewSubject = () => {
               <TableTemplate buttonHaver={StudentsMarksButtonHaver} columns={studentColumns} rows={studentRows} />
             }
 
+            {/* Bottom navigation to switch between attendance and marks views */}
             <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
               <BottomNavigation value={selectedSection} onChange={handleSectionChange} showLabels>
                 <BottomNavigationAction
@@ -138,11 +152,12 @@ const ViewSubject = () => {
           </>
         )}
       </>
-    )
-  }
+    );
+  };
 
+  // Section for displaying subject details
   const SubjectDetailsSection = () => {
-    const numberOfStudents = sclassStudents.length;
+    const numberOfStudents = sclassStudents.length; // Calculate number of students
 
     return (
       <>
@@ -164,48 +179,47 @@ const ViewSubject = () => {
         <Typography variant="h6" gutterBottom>
           Class Name : {subjectDetails && subjectDetails.sclassName && subjectDetails.sclassName.sclassName}
         </Typography>
-        {subjectDetails && subjectDetails.teacher ?
+        {subjectDetails && subjectDetails.teacher ? (
           <Typography variant="h6" gutterBottom>
             Teacher Name : {subjectDetails.teacher.name}
           </Typography>
-          :
+        ) : (
           <GreenButton variant="contained"
             onClick={() => navigate("/Admin/teachers/addteacher/" + subjectDetails._id)}>
             Add Subject Teacher
           </GreenButton>
-        }
+        )}
       </>
     );
-  }
+  };
 
+  // Main render: show loading or tabs with details and students section
   return (
     <>
-      {subloading ?
-        < div > Loading...</div >
-        :
-        <>
-          <Box sx={{ width: '100%', typography: 'body1', }} >
-            <TabContext value={value}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <TabList onChange={handleChange} sx={{ position: 'fixed', width: '100%', bgcolor: 'background.paper', zIndex: 1 }}>
-                  <Tab label="Details" value="1" />
-                  <Tab label="Students" value="2" />
-                </TabList>
-              </Box>
-              <Container sx={{ marginTop: "3rem", marginBottom: "4rem" }}>
-                <TabPanel value="1">
-                  <SubjectDetailsSection />
-                </TabPanel>
-                <TabPanel value="2">
-                  <SubjectStudentsSection />
-                </TabPanel>
-              </Container>
-            </TabContext>
-          </Box>
-        </>
-      }
+      {subloading ? (
+        <div>Loading...</div>
+      ) : (
+        <Box sx={{ width: '100%', typography: 'body1' }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChange} sx={{ position: 'fixed', width: '100%', bgcolor: 'background.paper', zIndex: 1 }}>
+                <Tab label="Details" value="1" />
+                <Tab label="Students" value="2" />
+              </TabList>
+            </Box>
+            <Container sx={{ marginTop: "3rem", marginBottom: "4rem" }}>
+              <TabPanel value="1">
+                <SubjectDetailsSection />
+              </TabPanel>
+              <TabPanel value="2">
+                <SubjectStudentsSection />
+              </TabPanel>
+            </Container>
+          </TabContext>
+        </Box>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default ViewSubject
+export default ViewSubject;

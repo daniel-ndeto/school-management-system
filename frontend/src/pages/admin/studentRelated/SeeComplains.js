@@ -5,6 +5,7 @@ import { getAllComplains } from '../../../redux/complainRelated/complainHandle';
 import TableTemplate from '../../../components/TableTemplate';
 
 const SeeComplains = () => {
+  // Label for the Checkbox component
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };  
   const dispatch = useDispatch();
 
@@ -12,7 +13,8 @@ const SeeComplains = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (currentUser?._id) {  // ✅ Ensure `currentUser` is defined
+    // Fetch complaints when currentUser is available
+    if (currentUser?._id) {
       dispatch(getAllComplains(currentUser._id, "Complain"));
     }
   }, [currentUser?._id, dispatch]);
@@ -30,10 +32,12 @@ const SeeComplains = () => {
   const complainRows = Array.isArray(complainsList)
     ? complainsList.map((complain) => {
         const date = new Date(complain?.date);
-        const dateString = !isNaN(date.getTime()) ? date.toISOString().substring(0, 10) : "Invalid Date";
+        const dateString = !isNaN(date.getTime())
+          ? date.toISOString().substring(0, 10)
+          : "Invalid Date";
 
         return {
-          user: complain?.user?.name || "Unknown",  // ✅ Safe access
+          user: complain?.user?.name || "Unknown",
           complaint: complain?.complaint || "No details",
           date: dateString,
           id: complain?._id || "N/A",
@@ -41,6 +45,7 @@ const SeeComplains = () => {
       })
     : [];
 
+  // Component for rendering a Checkbox in each table row
   const ComplainButtonHaver = ({ row }) => {
     return <Checkbox {...label} />;
   };

@@ -8,54 +8,56 @@ import { underControl } from '../../../redux/userRelated/userSlice';
 import { CircularProgress } from '@mui/material';
 
 const AddTeacher = () => {
-  const params = useParams()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  // Get subject ID from URL and initialize dispatch/navigation hooks
+  const params = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const subjectID = params.id;
 
-  const subjectID = params.id
-
+  // Extract status and subject details from Redux store
   const { status, response, error } = useSelector(state => state.user);
   const { subjectDetails } = useSelector((state) => state.sclass);
 
+  // Fetch subject details on mount or when subjectID changes
   useEffect(() => {
     dispatch(getSubjectDetails(subjectID, "Subject"));
   }, [dispatch, subjectID]);
 
+  // Local state for form inputs and UI feedback
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
-
+  const [password, setPassword] = useState('');
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
 
-  const role = "Teacher"
-  const school = subjectDetails && subjectDetails.school
-  const teachSubject = subjectDetails && subjectDetails._id
-  const teachSclass = subjectDetails && subjectDetails.sclassName && subjectDetails.sclassName._id
+  // Prepare registration fields using subject details
+  const role = "Teacher";
+  const school = subjectDetails && subjectDetails.school;
+  const teachSubject = subjectDetails && subjectDetails._id;
+  const teachSclass = subjectDetails && subjectDetails.sclassName && subjectDetails.sclassName._id;
+  const fields = { name, email, password, role, school, teachSubject, teachSclass };
 
-  const fields = { name, email, password, role, school, teachSubject, teachSclass }
-
+  // Handle form submission to register a teacher
   const submitHandler = (event) => {
-    event.preventDefault()
-    setLoader(true)
-    dispatch(registerUser(fields, role))
-  }
+    event.preventDefault();
+    setLoader(true);
+    dispatch(registerUser(fields, role));
+  };
 
+  // Monitor registration status and navigate or show error popup
   useEffect(() => {
     if (status === 'added') {
-      dispatch(underControl())
-      navigate("/Admin/teachers")
-    }
-    else if (status === 'failed') {
-      setMessage(response)
-      setShowPopup(true)
-      setLoader(false)
-    }
-    else if (status === 'error') {
-      setMessage("Network Error")
-      setShowPopup(true)
-      setLoader(false)
+      dispatch(underControl());
+      navigate("/Admin/teachers");
+    } else if (status === 'failed') {
+      setMessage(response);
+      setShowPopup(true);
+      setLoader(false);
+    } else if (status === 'error') {
+      setMessage("Network Error");
+      setShowPopup(true);
+      setLoader(false);
     }
   }, [status, navigate, error, response, dispatch]);
 
@@ -76,19 +78,16 @@ const AddTeacher = () => {
             value={name}
             onChange={(event) => setName(event.target.value)}
             autoComplete="name" required />
-
           <label>Email</label>
           <input className="registerInput" type="email" placeholder="Enter teacher's email..."
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email" required />
-
           <label>Password</label>
           <input className="registerInput" type="password" placeholder="Enter teacher's password..."
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             autoComplete="new-password" required />
-
           <button className="registerButton" type="submit" disabled={loader}>
             {loader ? (
               <CircularProgress size={24} color="inherit" />
@@ -103,4 +102,4 @@ const AddTeacher = () => {
   )
 }
 
-export default AddTeacher
+export default AddTeacher;

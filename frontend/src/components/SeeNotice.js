@@ -8,19 +8,29 @@ const SeeNotice = () => {
     const dispatch = useDispatch();
 
     // Extracting user and notice-related state from Redux store
-    const { currentUser, currentRole } = useSelector(state => state.user);
-    const { noticesList, loading, error, response } = useSelector((state) => state.notice);
+    const { currentUser, currentRole } = useSelector((state) => state.user) || {};
+    const { noticesList, loading, error, response } = useSelector((state) => state.notice) || {};
 
     useEffect(() => {
-        // Fetch notices based on user role
-        if (currentRole === "Admin") {
-            dispatch(getAllNotices(currentUser._id, "Notice"));
-        } else {
-            dispatch(getAllNotices(currentUser.school._id, "Notice"));
-        }
-    }, [dispatch, currentRole, currentUser._id, currentUser.school._id]);
+        // Only dispatch if currentUser is defined
+        if (!currentUser) return;
 
-    if (error) console.log(error);
+        if (currentRole === 'Admin') {
+            // Check if currentUser._id exists
+            if (currentUser._id) {
+                dispatch(getAllNotices(currentUser._id, 'Notice'));
+            }
+        } else {
+            // Check if currentUser.school._id exists
+            if (currentUser.school?.['_id']) {
+                dispatch(getAllNotices(currentUser.school._id, 'Notice'));
+            }
+        }
+    }, [dispatch, currentRole, currentUser]);
+
+    if (error) {
+        console.error(error);
+    }
 
     // Table columns definition
     const noticeColumns = [
@@ -29,17 +39,21 @@ const SeeNotice = () => {
         { id: 'date', label: 'Date', minWidth: 170 },
     ];
 
-    // Map notices to table rows
-    const noticeRows = noticesList.map((notice) => {
-        const date = new Date(notice.date);
-        const dateString = date.toString() !== "Invalid Date" ? date.toISOString().substring(0, 10) : "Invalid Date";
-        return {
-            title: notice.title,
-            details: notice.details,
-            date: dateString,
-            id: notice._id,
-        };
-    });
+    // Safely map notices to table rows
+    const noticeRows = Array.isArray(noticesList)
+        ? noticesList.map((notice) => {
+            const date = new Date(notice.date);
+            const dateString = date.toString() !== 'Invalid Date'
+                ? date.toISOString().substring(0, 10)
+                : 'Invalid Date';
+            return {
+                title: notice.title,
+                details: notice.details,
+                date: dateString,
+                id: notice._id,
+            };
+        })
+        : [];
 
     return (
         <div style={{ marginTop: '50px', marginRight: '20px' }}>
@@ -51,7 +65,7 @@ const SeeNotice = () => {
                 <>
                     <h3 style={{ fontSize: '30px', marginBottom: '40px' }}>Notices</h3>
                     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                        {Array.isArray(noticesList) && noticesList.length > 0 && (
+                        {noticeRows.length > 0 && (
                             <TableViewTemplate columns={noticeColumns} rows={noticeRows} />
                         )}
                     </Paper>

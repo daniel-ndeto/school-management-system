@@ -10,17 +10,21 @@ const ChooseClass = ({ situation }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
 
+    // Retrieve necessary state from Redux store
     const { sclassesList, loading, error, getresponse } = useSelector((state) => state.sclass);
     const { currentUser } = useSelector(state => state.user)
 
+    // Fetch all classes for the current user when component mounts
     useEffect(() => {
         dispatch(getAllSclasses(currentUser._id, "Sclass"));
     }, [currentUser._id, dispatch]);
 
+    // Log error if present
     if (error) {
         console.log(error)
     }
 
+    // Navigate based on situation
     const navigateHandler = (classID) => {
         if (situation === "Teacher") {
             navigate("/Admin/teachers/choosesubject/" + classID)
@@ -30,6 +34,7 @@ const ChooseClass = ({ situation }) => {
         }
     }
 
+    // Table configuration: columns and rows
     const sclassColumns = [
         { id: 'name', label: 'Class Name', minWidth: 170 },
     ]
@@ -41,6 +46,7 @@ const ChooseClass = ({ situation }) => {
         };
     })
 
+    // Render a button for each table row
     const SclassButtonHaver = ({ row }) => {
         return (
             <>
@@ -52,6 +58,7 @@ const ChooseClass = ({ situation }) => {
         );
     };
 
+    // Main render block for the component
     return (
         <>
             {loading ?
@@ -59,6 +66,7 @@ const ChooseClass = ({ situation }) => {
                 :
                 <>
                     {getresponse ?
+                        // Render "Add Class" button when response exists
                         <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
                             <Button variant="contained" onClick={() => navigate("/Admin/addclass")}>
                                 Add Class
@@ -79,4 +87,4 @@ const ChooseClass = ({ situation }) => {
     )
 }
 
-export default ChooseClass
+export default ChooseClass;
