@@ -15,7 +15,7 @@ const Homepage = () => {
                 <Grid item xs={12} md={6}>
                     <StyledPaper elevation={3}>
                         <StyledTitle>
-                            Welcome to
+                            Welcome to Edu-365
                             <br />
                             School Management
                             <br />
