@@ -17,19 +17,21 @@ import Popup from '../components/Popup';
 const ChooseUser = ({ visitor }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const password = "zxc"
+  const password = "zxc" // Default password for guest login
 
-  const { status, currentUser, currentRole } = useSelector(state => state.user);;
+  // Get user state from Redux store
+  const { status, currentUser, currentRole } = useSelector(state => state.user);
 
   const [loader, setLoader] = useState(false)
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState("");
 
+  // Handle navigation and login for different user types
   const navigateHandler = (user) => {
     if (user === "Admin") {
       if (visitor === "guest") {
-        const email = "yogendra@12"
-        const fields = { email, password }
+        // Auto-login for guest admin
+        const fields = { email: "yogendra@12", password }
         setLoader(true)
         dispatch(loginUser(fields, user))
       }
@@ -40,9 +42,8 @@ const ChooseUser = ({ visitor }) => {
 
     else if (user === "Student") {
       if (visitor === "guest") {
-        const rollNum = "1"
-        const studentName = "Dipesh Awasthi"
-        const fields = { rollNum, studentName, password }
+        // Auto-login for guest student
+        const fields = { rollNum: "1", studentName: "Dipesh Awasthi", password }
         setLoader(true)
         dispatch(loginUser(fields, user))
       }
@@ -53,8 +54,8 @@ const ChooseUser = ({ visitor }) => {
 
     else if (user === "Teacher") {
       if (visitor === "guest") {
-        const email = "tony@12"
-        const fields = { email, password }
+        // Auto-login for guest teacher
+        const fields = { email: "tony@12", password }
         setLoader(true)
         dispatch(loginUser(fields, user))
       }
@@ -64,8 +65,10 @@ const ChooseUser = ({ visitor }) => {
     }
   }
 
+  // Handle redirect after successful login or show error
   useEffect(() => {
     if (status === 'success' || currentUser !== null) {
+      // Redirect to respective dashboard based on role
       if (currentRole === 'Admin') {
         navigate('/Admin/dashboard');
       }
@@ -86,6 +89,7 @@ const ChooseUser = ({ visitor }) => {
     <StyledContainer>
       <Container>
         <Grid container spacing={2} justifyContent="center">
+          {/* Admin login card */}
           <Grid item xs={12} sm={6} md={4}>
             <div onClick={() => navigateHandler("Admin")}>
               <StyledPaper elevation={3}>
@@ -99,6 +103,8 @@ const ChooseUser = ({ visitor }) => {
               </StyledPaper>
             </div>
           </Grid>
+
+          {/* Student login card */}
           <Grid item xs={12} sm={6} md={4}>
             <StyledPaper elevation={3}>
               <div onClick={() => navigateHandler("Student")}>
@@ -112,6 +118,8 @@ const ChooseUser = ({ visitor }) => {
               </div>
             </StyledPaper>
           </Grid>
+
+          {/* Teacher login card */}
           <Grid item xs={12} sm={6} md={4}>
             <StyledPaper elevation={3}>
               <div onClick={() => navigateHandler("Teacher")}>
@@ -127,6 +135,8 @@ const ChooseUser = ({ visitor }) => {
           </Grid>
         </Grid>
       </Container>
+
+      {/* Loading backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loader}
@@ -141,6 +151,7 @@ const ChooseUser = ({ visitor }) => {
 
 export default ChooseUser;
 
+// Styled components for custom styling
 const StyledContainer = styled.div`
   background: linear-gradient(to bottom, #411d70, #19118b);
   height: 120vh;

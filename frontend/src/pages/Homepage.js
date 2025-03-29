@@ -9,9 +9,12 @@ const Homepage = () => {
     return (
         <StyledContainer>
             <Grid container spacing={0}>
+                {/* Left side - Image section */}
                 <Grid item xs={12} md={6}>
                     <img src={Students} alt="students" style={{ width: '100%' }} />
                 </Grid>
+                
+                {/* Right side - Content section */}
                 <Grid item xs={12} md={6}>
                     <StyledPaper elevation={3}>
                         <StyledTitle>
@@ -26,6 +29,8 @@ const Homepage = () => {
                             Seamlessly track attendance, assess performance, and provide feedback.
                             Access records, view marks, and communicate effortlessly.
                         </StyledText>
+                        
+                        {/* Authentication options */}
                         <StyledBox>
                             <StyledLink to="/choose">
                                 <LightPurpleButton variant="contained" fullWidth>
@@ -55,6 +60,7 @@ const Homepage = () => {
 
 export default Homepage;
 
+// Styled components for layout and visual elements
 const StyledContainer = styled(Container)`
   display: flex;
   justify-content: center;
@@ -79,7 +85,6 @@ const StyledBox = styled(Box)`
 const StyledTitle = styled.h1`
   font-size: 3rem;
   color: #252525;
-  /* font-family: "Manrope"; */
   font-weight: bold;
   padding-top: 0;
   letter-spacing: normal;
@@ -87,7 +92,6 @@ const StyledTitle = styled.h1`
 `;
 
 const StyledText = styled.p`
-  /* color: #550080; */
   margin-top: 30px;
   margin-bottom: 30px; 
   letter-spacing: normal;

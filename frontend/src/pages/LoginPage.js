@@ -12,24 +12,29 @@ import Popup from '../components/Popup';
 
 const defaultTheme = createTheme();
 
+// LoginPage component handles authentication for different user roles (Student, Admin, Teacher)
 const LoginPage = ({ role }) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    // Get user state from Redux store
     const { status, currentUser, response, error, currentRole } = useSelector(state => state.user);;
 
+    // State management for UI elements and form validation
     const [toggle, setToggle] = useState(false)
     const [guestLoader, setGuestLoader] = useState(false)
     const [loader, setLoader] = useState(false)
     const [showPopup, setShowPopup] = useState(false);
     const [message, setMessage] = useState("");
 
+    // form validation error states
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [rollNumberError, setRollNumberError] = useState(false);
     const [studentNameError, setStudentNameError] = useState(false);
 
+    // Handle form submission based on user role
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -38,17 +43,20 @@ const LoginPage = ({ role }) => {
             const studentName = event.target.studentName.value;
             const password = event.target.password.value;
 
+            // Student login validation and submission
             if (!rollNum || !studentName || !password) {
                 if (!rollNum) setRollNumberError(true);
                 if (!studentName) setStudentNameError(true);
                 if (!password) setPasswordError(true);
                 return;
             }
+
             const fields = { rollNum, studentName, password }
             setLoader(true)
             dispatch(loginUser(fields, role))
         }
 
+        // Admin/Teacher login validation and submission
         else {
             const email = event.target.email.value;
             const password = event.target.password.value;
@@ -65,6 +73,7 @@ const LoginPage = ({ role }) => {
         }
     };
 
+    // Reset form validation errors on input change
     const handleInputChange = (event) => {
         const { name } = event.target;
         if (name === 'email') setEmailError(false);
@@ -73,6 +82,7 @@ const LoginPage = ({ role }) => {
         if (name === 'studentName') setStudentNameError(false);
     };
 
+    // Handle guest login for different roles
     const guestModeHandler = () => {
         const password = "zxc"
 
@@ -82,6 +92,7 @@ const LoginPage = ({ role }) => {
             setGuestLoader(true)
             dispatch(loginUser(fields, role))
         }
+
         else if (role === "Student") {
             const rollNum = "1"
             const studentName = "Dipesh Awasthi"
@@ -89,6 +100,7 @@ const LoginPage = ({ role }) => {
             setGuestLoader(true)
             dispatch(loginUser(fields, role))
         }
+
         else if (role === "Teacher") {
             const email = "tony@12"
             const fields = { email, password }
@@ -97,28 +109,34 @@ const LoginPage = ({ role }) => {
         }
     }
 
+    // Handle navigation and error states after login attempt
     useEffect(() => {
+
         if (status === 'success' || currentUser !== null) {
             if (currentRole === 'Admin') {
                 navigate('/Admin/dashboard');
             }
+
             else if (currentRole === 'Student') {
                 navigate('/Student/dashboard');
             } else if (currentRole === 'Teacher') {
                 navigate('/Teacher/dashboard');
             }
         }
+
         else if (status === 'failed') {
             setMessage(response)
             setShowPopup(true)
             setLoader(false)
         }
+
         else if (status === 'error') {
             setMessage("Network Error")
             setShowPopup(true)
             setLoader(false)
             setGuestLoader(false)
         }
+
     }, [status, currentRole, navigate, error, response, currentUser]);
 
     return (
@@ -144,6 +162,7 @@ const LoginPage = ({ role }) => {
                         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 2 }}>
                             {role === "Student" ? (
                                 <>
+
                                     <TextField
                                         margin="normal"
                                         required
@@ -158,6 +177,7 @@ const LoginPage = ({ role }) => {
                                         helperText={rollNumberError && 'Roll Number is required'}
                                         onChange={handleInputChange}
                                     />
+
                                     <TextField
                                         margin="normal"
                                         required
@@ -172,6 +192,7 @@ const LoginPage = ({ role }) => {
                                         onChange={handleInputChange}
                                     />
                                 </>
+
                             ) : (
                                 <TextField
                                     margin="normal"
@@ -186,6 +207,7 @@ const LoginPage = ({ role }) => {
                                     helperText={emailError && 'Email is required'}
                                     onChange={handleInputChange}
                                 />
+
                             )}
                             <TextField
                                 margin="normal"
@@ -213,15 +235,18 @@ const LoginPage = ({ role }) => {
                                     ),
                                 }}
                             />
+
                             <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" />}
                                     label="Remember me"
                                 />
+
                                 <StyledLink href="#">
                                     Forgot password?
                                 </StyledLink>
                             </Grid>
+
                             <LightPurpleButton
                                 type="submit"
                                 fullWidth
@@ -232,6 +257,7 @@ const LoginPage = ({ role }) => {
                                     <CircularProgress size={24} color="inherit" />
                                     : "Login"}
                             </LightPurpleButton>
+
                             <Button
                                 fullWidth
                                 onClick={guestModeHandler}
@@ -240,11 +266,13 @@ const LoginPage = ({ role }) => {
                             >
                                 Login as Guest
                             </Button>
+
                             {role === "Admin" &&
                                 <Grid container>
                                     <Grid>
                                         Don't have an account?
                                     </Grid>
+
                                     <Grid item sx={{ ml: 2 }}>
                                         <StyledLink to="/Adminregister">
                                             Sign up
@@ -255,6 +283,7 @@ const LoginPage = ({ role }) => {
                         </Box>
                     </Box>
                 </Grid>
+
                 <Grid
                     item
                     xs={false}
@@ -270,6 +299,7 @@ const LoginPage = ({ role }) => {
                     }}
                 />
             </Grid>
+            
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                 open={guestLoader}
