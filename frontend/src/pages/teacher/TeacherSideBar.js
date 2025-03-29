@@ -1,7 +1,9 @@
+// Import necessary Material-UI and React Router components
 import * as React from 'react';
 import { Divider, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 
+// Import Material-UI icons for navigation items
 import HomeIcon from '@mui/icons-material/Home';
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
@@ -10,25 +12,35 @@ import ClassOutlinedIcon from '@mui/icons-material/ClassOutlined';
 import { useSelector } from 'react-redux';
 
 const TeacherSideBar = () => {
+    // Get current user data from Redux store
     const { currentUser } = useSelector((state) => state.user);
     const sclassName = currentUser.teachSclass
 
+    // Hook to get current route location for active state styling
     const location = useLocation();
+    
     return (
         <>
+            {/* Main Navigation Section */}
             <React.Fragment>
+                {/* Home Navigation Item */}
                 <ListItemButton component={Link} to="/">
                     <ListItemIcon>
+                        {/* Icon changes color based on active route */}
                         <HomeIcon color={location.pathname === ("/" || "/Teacher/dashboard") ? 'primary' : 'inherit'} />
                     </ListItemIcon>
                     <ListItemText primary="Home" />
                 </ListItemButton>
+
+                {/* Class Management Navigation */}
                 <ListItemButton component={Link} to="/Teacher/class">
                     <ListItemIcon>
                         <ClassOutlinedIcon color={location.pathname.startsWith("/Teacher/class") ? 'primary' : 'inherit'} />
                     </ListItemIcon>
                     <ListItemText primary={`Class ${sclassName.sclassName}`} />
                 </ListItemButton>
+
+                {/* Complaints Section */}
                 <ListItemButton component={Link} to="/Teacher/complain">
                     <ListItemIcon>
                         <AnnouncementOutlinedIcon color={location.pathname.startsWith("/Teacher/complain") ? 'primary' : 'inherit'} />
@@ -36,17 +48,24 @@ const TeacherSideBar = () => {
                     <ListItemText primary="Complain" />
                 </ListItemButton>
             </React.Fragment>
+
+            {/* Divider between main navigation and user section */}
             <Divider sx={{ my: 1 }} />
+
+            {/* User Related Navigation Section */}
             <React.Fragment>
                 <ListSubheader component="div" inset>
                     User
                 </ListSubheader>
+                {/* Profile Navigation */}
                 <ListItemButton component={Link} to="/Teacher/profile">
                     <ListItemIcon>
                         <AccountCircleOutlinedIcon color={location.pathname.startsWith("/Teacher/profile") ? 'primary' : 'inherit'} />
                     </ListItemIcon>
                     <ListItemText primary="Profile" />
                 </ListItemButton>
+
+                {/* Logout Option */}
                 <ListItemButton component={Link} to="/logout">
                     <ListItemIcon>
                         <ExitToAppIcon color={location.pathname.startsWith("/logout") ? 'primary' : 'inherit'} />

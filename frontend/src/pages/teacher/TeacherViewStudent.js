@@ -1,3 +1,4 @@
+// Import necessary libraries and components
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../../redux/userRelated/userHandle';
@@ -11,28 +12,35 @@ import { StyledTableCell, StyledTableRow } from '../../components/styles';
 
 const TeacherViewStudent = () => {
 
+    // Hooks for navigation, params, and Redux
     const navigate = useNavigate()
     const params = useParams()
     const dispatch = useDispatch();
+    // Get user state from Redux store
     const { currentUser, userDetails, response, loading, error } = useSelector((state) => state.user);
 
+    // Constants for API calls and data handling
     const address = "Student"
     const studentID = params.id
     const teachSubject = currentUser.teachSubject?.subName
     const teachSubjectID = currentUser.teachSubject?._id
 
+    // Fetch user details on component mount
     useEffect(() => {
         dispatch(getUserDetails(studentID, address));
     }, [dispatch, studentID]);
 
+    // Error handling
     if (response) { console.log(response) }
     else if (error) { console.log(error) }
 
+    // State for student information
     const [sclassName, setSclassName] = useState('');
     const [studentSchool, setStudentSchool] = useState('');
     const [subjectMarks, setSubjectMarks] = useState('');
     const [subjectAttendance, setSubjectAttendance] = useState([]);
 
+    //  State to track which attendance details are expanded
     const [openStates, setOpenStates] = useState({});
 
     const handleOpen = (subId) => {
@@ -42,6 +50,7 @@ const TeacherViewStudent = () => {
         }));
     };
 
+     // Update local state when user details are loaded
     useEffect(() => {
         if (userDetails) {
             setSclassName(userDetails.sclassName || '');
@@ -51,9 +60,11 @@ const TeacherViewStudent = () => {
         }
     }, [userDetails]);
 
+    // Calculate attendance statistics for charts
     const overallAttendancePercentage = calculateOverallAttendancePercentage(subjectAttendance);
     const overallAbsentPercentage = 100 - overallAttendancePercentage;
 
+    // Prepare data for pie chart
     const chartData = [
         { name: 'Present', value: overallAttendancePercentage },
         { name: 'Absent', value: overallAbsentPercentage }
@@ -68,6 +79,7 @@ const TeacherViewStudent = () => {
                 </>
                 :
                 <div>
+                    {/* Student basic information */}
                     Name: {userDetails.name}
                     <br />
                     Roll Number: {userDetails.rollNum}
@@ -77,6 +89,7 @@ const TeacherViewStudent = () => {
                     School: {studentSchool.schoolName}
                     <br /><br />
 
+{/* Attendance section */}
                     <h3>Attendance:</h3>
                     {subjectAttendance && Array.isArray(subjectAttendance) && subjectAttendance.length > 0
                         &&

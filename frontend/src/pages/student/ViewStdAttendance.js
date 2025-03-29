@@ -1,3 +1,4 @@
+// Import necessary React and Material-UI components
 import React, { useEffect, useState } from 'react'
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { BottomNavigation, BottomNavigationAction, Box, Button, Collapse, Paper, Table, TableBody, TableHead, Typography } from '@mui/material';
@@ -7,6 +8,7 @@ import { calculateOverallAttendancePercentage, calculateSubjectAttendancePercent
 
 import CustomBarChart from '../../components/CustomBarChart'
 
+// Import icons for navigation
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import InsertChartOutlinedIcon from '@mui/icons-material/InsertChartOutlined';
 import TableChartIcon from '@mui/icons-material/TableChart';
@@ -16,8 +18,10 @@ import { StyledTableCell, StyledTableRow } from '../../components/styles';
 const ViewStdAttendance = () => {
     const dispatch = useDispatch();
 
+        // State to manage expansion panels for each subject
     const [openStates, setOpenStates] = useState({});
 
+        // Toggle expansion panel for a subject
     const handleOpen = (subId) => {
         setOpenStates((prevState) => ({
             ...prevState,
@@ -25,28 +29,35 @@ const ViewStdAttendance = () => {
         }));
     };
 
+        // Toggle expansion panel for a subject
     const { userDetails, currentUser, loading, response, error } = useSelector((state) => state.user);
 
+        // Fetch user details on component mount
     useEffect(() => {
         dispatch(getUserDetails(currentUser._id, "Student"));
     }, [dispatch, currentUser._id]);
 
+            // Log any responses or errors
     if (response) { console.log(response) }
     else if (error) { console.log(error) }
 
+        // State for attendance data and view selection
     const [subjectAttendance, setSubjectAttendance] = useState([]);
     const [selectedSection, setSelectedSection] = useState('table');
 
+        // Update attendance data when user details change
     useEffect(() => {
         if (userDetails) {
             setSubjectAttendance(userDetails.attendance || []);
         }
     }, [userDetails])
 
+        // Group attendance data by subject and calculate attendance percentages
     const attendanceBySubject = groupAttendanceBySubject(subjectAttendance)
 
     const overallAttendancePercentage = calculateOverallAttendancePercentage(subjectAttendance);
 
+        // Format data for chart view
     const subjectData = Object.entries(attendanceBySubject).map(([subName, { subCode, present, sessions }]) => {
         const subjectAttendancePercentage = calculateSubjectAttendancePercentage(present, sessions);
         return {
@@ -57,10 +68,12 @@ const ViewStdAttendance = () => {
         };
     });
 
+        // Handle switching between table and chart views
     const handleSectionChange = (event, newSection) => {
         setSelectedSection(newSection);
     };
 
+        // Render table view with detailed attendance information
     const renderTableSection = () => {
         return (
             <>
@@ -77,11 +90,13 @@ const ViewStdAttendance = () => {
                             <StyledTableCell align="center">Actions</StyledTableCell>
                         </StyledTableRow>
                     </TableHead>
+                    {/* Map through subjects and render attendance data */}
                     {Object.entries(attendanceBySubject).map(([subName, { present, allData, subId, sessions }], index) => {
                         const subjectAttendancePercentage = calculateSubjectAttendancePercentage(present, sessions);
 
                         return (
                             <TableBody key={index}>
+                                 {/* Main subject row */}
                                 <StyledTableRow>
                                     <StyledTableCell>{subName}</StyledTableCell>
                                     <StyledTableCell>{present}</StyledTableCell>
@@ -94,10 +109,12 @@ const ViewStdAttendance = () => {
                                         </Button>
                                     </StyledTableCell>
                                 </StyledTableRow>
+                                {/* Expandable details section */}
                                 <StyledTableRow>
                                     <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                         <Collapse in={openStates[subId]} timeout="auto" unmountOnExit>
                                             <Box sx={{ margin: 1 }}>
+                                                {/* Detailed attendance table */}
                                                 <Typography variant="h6" gutterBottom component="div">
                                                     Attendance Details
                                                 </Typography>
@@ -107,6 +124,7 @@ const ViewStdAttendance = () => {
                                                             <StyledTableCell>Date</StyledTableCell>
                                                             <StyledTableCell align="right">Status</StyledTableCell>
                                                         </StyledTableRow>
+                                                        {/* Detailed attendance table */}
                                                     </TableHead>
                                                     <TableBody>
                                                         {allData.map((data, index) => {

@@ -1,22 +1,28 @@
+// Import necessary React and Material UI components
 import React from 'react'
 import styled from 'styled-components';
 import { Card, CardContent, Typography, Grid, Box, Avatar, Container, Paper } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 const StudentProfile = () => {
+  // Extract user data from Redux store
   const { currentUser, response, error } = useSelector((state) => state.user);
 
+  // Log any API responses or errors to console
   if (response) { console.log(response) }
   else if (error) { console.log(error) }
 
+  // Extract class and school information from current user
   const sclassName = currentUser.sclassName
   const studentSchool = currentUser.school
 
   return (
     <>
       <Container maxWidth="md">
+        {/* Profile header section with avatar and basic info */}
         <StyledPaper elevation={3}>
           <Grid container spacing={2}>
+            {/* Student avatar - displays first letter of name if no image */}
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
                 <Avatar alt="Student Avatar" sx={{ width: 150, height: 150 }}>
@@ -24,6 +30,7 @@ const StudentProfile = () => {
                 </Avatar>
               </Box>
             </Grid>
+            {/* Student name */}
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
                 <Typography variant="h5" component="h2" textAlign="center">
@@ -31,6 +38,7 @@ const StudentProfile = () => {
                 </Typography>
               </Box>
             </Grid>
+            {/* Student roll number */}
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
                 <Typography variant="subtitle1" component="p" textAlign="center">
@@ -38,6 +46,7 @@ const StudentProfile = () => {
                 </Typography>
               </Box>
             </Grid>
+            {/* Student class */}
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
                 <Typography variant="subtitle1" component="p" textAlign="center">
@@ -45,6 +54,7 @@ const StudentProfile = () => {
                 </Typography>
               </Box>
             </Grid>
+            {/* Student school */}
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">
                 <Typography variant="subtitle1" component="p" textAlign="center">
@@ -54,12 +64,15 @@ const StudentProfile = () => {
             </Grid>
           </Grid>
         </StyledPaper>
+        
+        {/* Personal information card with additional details */}
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
               Personal Information
             </Typography>
             <Grid container spacing={2}>
+              {/* Two-column layout for personal details */}
               <Grid item xs={12} sm={6}>
                 <Typography variant="subtitle1" component="p">
                   <strong>Date of Birth:</strong> January 1, 2000
@@ -100,6 +113,7 @@ const StudentProfile = () => {
 
 export default StudentProfile
 
+// Styled component for the profile header paper
 const StyledPaper = styled(Paper)`
   padding: 20px;
   margin-bottom: 20px;

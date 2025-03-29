@@ -1,3 +1,4 @@
+// Essential imports for React, Redux, routing, and Material-UI components
 import { useEffect } from "react";
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,42 +10,51 @@ import TableTemplate from "../../components/TableTemplate";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 
 const TeacherClassDetails = () => {
+    // Initialize hooks for navigation and Redux
     const navigate = useNavigate()
     const dispatch = useDispatch();
+    
+    // Get class students and status from Redux store
     const { sclassStudents, loading, error, getresponse } = useSelector((state) => state.sclass);
 
+    // Get current user data and extract class/subject IDs
     const { currentUser } = useSelector((state) => state.user);
     const classID = currentUser.teachSclass?._id
     const subjectID = currentUser.teachSubject?._id
 
+    // Fetch class students data on component mount
     useEffect(() => {
         dispatch(getClassStudents(classID));
     }, [dispatch, classID])
 
+    // Error handling
     if (error) {
         console.log(error)
     }
 
+    // Define table columns structure
     const studentColumns = [
         { id: 'name', label: 'Name', minWidth: 170 },
         { id: 'rollNum', label: 'Roll Number', minWidth: 100 },
     ]
 
-    const studentRows = sclassStudents.map((student) => {
-        return {
-            name: student.name,
-            rollNum: student.rollNum,
-            id: student._id,
-        };
-    })
+    // Transform students data for table display
+    const studentRows = sclassStudents.map((student) => ({
+        name: student.name,
+        rollNum: student.rollNum,
+        id: student._id,
+    }));
 
+    // Component for student action buttons (View, Take Attendance, Provide Marks)
     const StudentsButtonHaver = ({ row }) => {
         const options = ['Take Attendance', 'Provide Marks'];
-
+        
+        // State management for dropdown menu
         const [open, setOpen] = React.useState(false);
         const anchorRef = React.useRef(null);
         const [selectedIndex, setSelectedIndex] = React.useState(0);
 
+        // Handle main button click based on selected option
         const handleClick = () => {
             console.info(`You clicked ${options[selectedIndex]}`);
             if (selectedIndex === 0) {
@@ -54,6 +64,7 @@ const TeacherClassDetails = () => {
             }
         };
 
+        // Navigation handlers for attendance and marks
         const handleAttendance = () => {
             navigate(`/Teacher/class/student/attendance/${row.id}/${subjectID}`)
         }
@@ -61,6 +72,7 @@ const TeacherClassDetails = () => {
             navigate(`/Teacher/class/student/marks/${row.id}/${subjectID}`)
         };
 
+        // Dropdown menu interaction handlers
         const handleMenuItemClick = (event, index) => {
             setSelectedIndex(index);
             setOpen(false);
@@ -74,11 +86,12 @@ const TeacherClassDetails = () => {
             if (anchorRef.current && anchorRef.current.contains(event.target)) {
                 return;
             }
-
             setOpen(false);
         };
+
         return (
             <>
+                {/* View button and split button group for additional actions */}
                 <BlueButton
                     variant="contained"
                     onClick={() =>
@@ -88,6 +101,7 @@ const TeacherClassDetails = () => {
                     View
                 </BlueButton>
                 <React.Fragment>
+                    {/* Split button group with dropdown */}
                     <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button">
                         <Button onClick={handleClick}>{options[selectedIndex]}</Button>
                         <BlackButton
@@ -101,10 +115,9 @@ const TeacherClassDetails = () => {
                             {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
                         </BlackButton>
                     </ButtonGroup>
+                    {/* Dropdown menu with transition effects */}
                     <Popper
-                        sx={{
-                            zIndex: 1,
-                        }}
+                        sx={{ zIndex: 1 }}
                         open={open}
                         anchorEl={anchorRef.current}
                         role={undefined}
@@ -143,6 +156,7 @@ const TeacherClassDetails = () => {
         );
     };
 
+    // Render component with loading state and conditional content
     return (
         <>
             {loading ? (
@@ -153,12 +167,12 @@ const TeacherClassDetails = () => {
                         Class Details
                     </Typography>
                     {getresponse ? (
-                        <>
-                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
-                                No Students Found
-                            </Box>
-                        </>
+                        // Display when no students are found
+                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+                            No Students Found
+                        </Box>
                     ) : (
+                        // Display student list table when students exist
                         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                             <Typography variant="h5" gutterBottom>
                                 Students List:
